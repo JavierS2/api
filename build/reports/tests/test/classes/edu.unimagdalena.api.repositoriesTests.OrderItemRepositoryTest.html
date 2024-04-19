@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - OrderItemRepositoryTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>OrderItemRepositoryTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/edu.unimagdalena.api.repositoriesTests.html">edu.unimagdalena.api.repositoriesTests</a> &gt; OrderItemRepositoryTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.505s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">test findByOrderId</td>
+<td class="success">givenOrderItem_ThenfindByOrderId()</td>
+<td class="success">0.505s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>18:43:24.028 [Test worker] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+18:43:24.032 [Test worker] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+18:43:24.161 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.NpipeSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+18:43:24.323 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with local Npipe socket (npipe:////./pipe/docker_engine)
+18:43:24.324 [Test worker] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+18:43:24.336 [Test worker] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 24.0.7
+  API Version: 1.43
+  Operating System: Docker Desktop
+  Total Memory: 7778 MB
+18:43:24.351 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Creating container for image: testcontainers/ryuk:0.6.0
+18:43:24.538 [Test worker] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+18:43:24.608 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Container testcontainers/ryuk:0.6.0 is starting: 5597315c3659ebc039d7f0ab44d3a5103eded3add332920b87b51fd5bb40a318
+18:43:24.937 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Container testcontainers/ryuk:0.6.0 started in PT0.5852329S
+18:43:24.941 [Test worker] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+18:43:24.941 [Test worker] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+18:43:24.941 [Test worker] INFO org.testcontainers.DockerClientFactory -- ?? Docker server version should be at least 1.6.0
+18:43:24.942 [Test worker] INFO tc.postgres:16-alpine -- Creating container for image: postgres:16-alpine
+18:43:24.965 [Test worker] INFO tc.postgres:16-alpine -- Container postgres:16-alpine is starting: 171712709d7a6521f3ef060baa893296576faf3d77800916c7c3e38676169fa4
+18:43:25.983 [Test worker] INFO tc.postgres:16-alpine -- Container postgres:16-alpine started in PT1.040928S
+18:43:25.984 [Test worker] INFO tc.postgres:16-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:50465/test?loggerLevel=OFF)
+18:43:26.048 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [edu.unimagdalena.api.repositoriesTests.OrderItemRepositoryTest]: OrderItemRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:43:26.146 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration edu.unimagdalena.api.ApiApplication for test class edu.unimagdalena.api.repositoriesTests.OrderItemRepositoryTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.4)
+
+2024-04-05T18:43:26.394-05:00  INFO 5640 --- [api] [    Test worker] e.u.a.r.OrderItemRepositoryTest          : Starting OrderItemRepositoryTest using Java 17.0.10 with PID 5640 (started by Estudiante in C:\Users\Estudiante\Downloads\api)
+2024-04-05T18:43:26.395-05:00  INFO 5640 --- [api] [    Test worker] e.u.a.r.OrderItemRepositoryTest          : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2024-04-05T18:43:26.604-05:00  INFO 5640 --- [api] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-04-05T18:43:26.704-05:00  INFO 5640 --- [api] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 94 ms. Found 6 JPA repository interfaces.
+2024-04-05T18:43:26.936-05:00  INFO 5640 --- [api] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-04-05T18:43:26.984-05:00  INFO 5640 --- [api] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-04-05T18:43:27.011-05:00  INFO 5640 --- [api] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-04-05T18:43:27.186-05:00  INFO 5640 --- [api] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-04-05T18:43:27.209-05:00  INFO 5640 --- [api] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-04-05T18:43:27.332-05:00  INFO 5640 --- [api] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@17f41739
+2024-04-05T18:43:27.333-05:00  INFO 5640 --- [api] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-04-05T18:43:27.355-05:00  WARN 5640 --- [api] [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-04-05T18:43:28.047-05:00  INFO 5640 --- [api] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: alter table if exists order_items drop constraint if exists FKbioxgbv59vetrxe0ejfubep1w
+2024-04-05T18:43:28.062-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.062-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : relation &quot;order_items&quot; does not exist, skipping
+Hibernate: alter table if exists order_items drop constraint if exists FKocimc7dtr037rh4ls4l95nlfi
+2024-04-05T18:43:28.063-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.063-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : relation &quot;order_items&quot; does not exist, skipping
+Hibernate: alter table if exists orders drop constraint if exists FKpxtb8awmi0dk6smoh2vp1litg
+2024-04-05T18:43:28.064-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.064-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : relation &quot;orders&quot; does not exist, skipping
+Hibernate: alter table if exists payments drop constraint if exists FK81gagumt0r8y3rmudcgpbk42l
+2024-04-05T18:43:28.065-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.065-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : relation &quot;payments&quot; does not exist, skipping
+Hibernate: alter table if exists shipment_details drop constraint if exists FKamvbbrd9di8bvntg1pmgx7vku
+2024-04-05T18:43:28.066-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.066-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : relation &quot;shipment_details&quot; does not exist, skipping
+Hibernate: drop table if exists customers cascade
+2024-04-05T18:43:28.067-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.067-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : table &quot;customers&quot; does not exist, skipping
+Hibernate: drop table if exists order_items cascade
+2024-04-05T18:43:28.068-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.068-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : table &quot;order_items&quot; does not exist, skipping
+Hibernate: drop table if exists orders cascade
+2024-04-05T18:43:28.069-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.069-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : table &quot;orders&quot; does not exist, skipping
+Hibernate: drop table if exists payments cascade
+2024-04-05T18:43:28.070-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.070-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : table &quot;payments&quot; does not exist, skipping
+Hibernate: drop table if exists products cascade
+2024-04-05T18:43:28.070-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.070-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : table &quot;products&quot; does not exist, skipping
+Hibernate: drop table if exists shipment_details cascade
+2024-04-05T18:43:28.071-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-04-05T18:43:28.071-05:00  WARN 5640 --- [api] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : table &quot;shipment_details&quot; does not exist, skipping
+Hibernate: create table customers (id bigserial not null, address varchar(255) not null, email varchar(255) not null unique, name varchar(255) not null, primary key (id))
+Hibernate: create table order_items (amount integer not null, unit_price float4 not null, id bigserial not null, order_id bigint, product_id bigint, primary key (id))
+Hibernate: create table orders (customer_id bigint, id bigserial not null, order_date timestamp(6), status varchar(255) check (status in ('PENDING','SENT','DELIVERED')), primary key (id))
+Hibernate: create table payments (payment_method smallint not null check (payment_method between 0 and 5), total_payment float4 not null, id bigserial not null, order_id bigint unique, payment_date timestamp(6), primary key (id))
+Hibernate: create table products (price float4 not null, stock integer not null, id bigserial not null, name varchar(255) not null, primary key (id))
+Hibernate: create table shipment_details (guide_number bigint unique, id bigserial not null, order_id bigint unique, shipment_address varchar(255) not null, transporter varchar(255), primary key (id))
+Hibernate: alter table if exists order_items add constraint FKbioxgbv59vetrxe0ejfubep1w foreign key (order_id) references orders
+Hibernate: alter table if exists order_items add constraint FKocimc7dtr037rh4ls4l95nlfi foreign key (product_id) references products
+Hibernate: alter table if exists orders add constraint FKpxtb8awmi0dk6smoh2vp1litg foreign key (customer_id) references customers
+Hibernate: alter table if exists payments add constraint FK81gagumt0r8y3rmudcgpbk42l foreign key (order_id) references orders
+Hibernate: alter table if exists shipment_details add constraint FKamvbbrd9di8bvntg1pmgx7vku foreign key (order_id) references orders
+2024-04-05T18:43:28.102-05:00  INFO 5640 --- [api] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-04-05T18:43:28.344-05:00  INFO 5640 --- [api] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-04-05T18:43:28.912-05:00  INFO 5640 --- [api] [    Test worker] e.u.a.r.OrderItemRepositoryTest          : Started OrderItemRepositoryTest in 2.722 seconds (process running for 5.507)
+Hibernate: select oi1_0.id,oi1_0.amount,oi1_0.order_id,oi1_0.product_id,oi1_0.unit_price from order_items oi1_0
+Hibernate: insert into orders (customer_id,order_date,status) values (?,?,?)
+Hibernate: insert into order_items (amount,order_id,product_id,unit_price) values (?,?,?,?)
+Hibernate: insert into order_items (amount,order_id,product_id,unit_price) values (?,?,?,?)
+Hibernate: select oi1_0.id,oi1_0.amount,oi1_0.order_id,oi1_0.product_id,oi1_0.unit_price from order_items oi1_0 where oi1_0.order_id=?
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.7</a> at 5/04/2024, 6:43:30 p. m.</p>
+</div>
+</div>
+</body>
+</html>
