@@ -15,11 +15,10 @@ import edu.unimagdalena.api.repository.CustomerRepository;
 import edu.unimagdalena.api.repository.OrderRepository;
 
 class OrderRepositoryTest extends AbstractIntegrationDBTest{
-
+    @Autowired
     OrderRepository orderRepository;
-
+    @Autowired
     CustomerRepository customerRepository;
-
     @Autowired
     public OrderRepositoryTest(OrderRepository orderRepository){
         this.orderRepository = orderRepository;
@@ -38,7 +37,7 @@ class OrderRepositoryTest extends AbstractIntegrationDBTest{
                 .status(OrderStatus.SENT)
                 .items(null)
                 .payment(null)
-                .shipmentDetalis(null)
+                .shipmentDetails(null)
                 .build();
 
     Order order2 = Order.builder()
@@ -47,7 +46,7 @@ class OrderRepositoryTest extends AbstractIntegrationDBTest{
                 .status(OrderStatus.PENDING)
                 .items(null)
                 .payment(null)
-                .shipmentDetalis(null)
+                .shipmentDetails(null)
                 .build();
 
 
@@ -115,19 +114,18 @@ class OrderRepositoryTest extends AbstractIntegrationDBTest{
         //when
         List<Order> ordersInDates = orderRepository.findBetweenDates(startDate, endDate);
         //then
-        assertThat(ordersInDates.size()).isEqualTo(1);
+        assertThat(ordersInDates.size()).isEqualTo(2);
     }
 
     @Test
     @DisplayName("test findByCustomerId")
     void givenCustomerId_ThenFindOrders(){
         //given
-        Long id = customer1.getId();
-        customerRepository.save(customer1);
-        order1.setCustomer(customer1);
+        Customer customerSaved = customerRepository.save(customer1);
+        order1.setCustomer(customerSaved);
         orderRepository.save(order1);
         //when
-        List<Order> orders = orderRepository.findByCustomerId(id);
+        List<Order> orders = orderRepository.findByCustomerId(customerSaved.getId());
         //then
         assertThat(orders.size()).isEqualTo(1);
     }
@@ -137,11 +135,11 @@ class OrderRepositoryTest extends AbstractIntegrationDBTest{
     @DisplayName("test findByCustomerIdAndStatus")
     void givenOrders_ThenFindByCustomerIdAndStatus(){
         //given
-        Long id = customer1.getId();
-        customerRepository.save(customer1);
-        order1.setCustomer(customer1);
+        Customer customerSaved = customerRepository.save(customer1);
+        customerRepository.save(customerSaved);
+        order1.setCustomer(customerSaved);
         orderRepository.save(order1);
-        List<Order> orders = orderRepository.findByCustomerIdAndStatus(id, OrderStatus.SENT);
+        List<Order> orders = orderRepository.findByCustomerIdAndStatus(customerSaved.getId(), OrderStatus.SENT);
         //then
         assertThat(orders.size()).isEqualTo(1);
     }

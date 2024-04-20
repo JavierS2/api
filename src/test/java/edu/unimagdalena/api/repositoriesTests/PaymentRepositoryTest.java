@@ -19,11 +19,9 @@ import edu.unimagdalena.api.repository.OrderRepository;
 import edu.unimagdalena.api.repository.PaymentRepository;
 
 public class PaymentRepositoryTest extends AbstractIntegrationDBTest{
-
     PaymentRepository paymentRepository;
     @Autowired
     OrderRepository orderRepository;
-
     @Autowired
     public PaymentRepositoryTest(PaymentRepository paymentRepository){
         this.paymentRepository = paymentRepository;
@@ -35,7 +33,7 @@ public class PaymentRepositoryTest extends AbstractIntegrationDBTest{
                 .status(OrderStatus.SENT)
                 .items(null)
                 .payment(null)
-                .shipmentDetalis(null)
+                .shipmentDetails(null)
                 .build();
 
     Payment payment1 = Payment.builder()
@@ -106,32 +104,30 @@ public class PaymentRepositoryTest extends AbstractIntegrationDBTest{
     }
 
     @Test
-    @DisplayName("test selectBetweenDates")
-    void givenPayment_ThenSelectBetweenDates(){
+    @DisplayName("test findByOrderDateBetweenDates")
+    void givenPayment_ThenfindByOrderDateBetweenDates(){
         //given
-        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
+        Order orderSaved = orderRepository.save(order1);
+        payment1.setOrder(orderSaved);
+        LocalDateTime startDate = LocalDateTime.now().minusDays(2);
         LocalDateTime endDate = LocalDateTime.now().plusDays(1);
         paymentRepository.save(payment1);
-        paymentRepository.save(payment2);
         //when
-        List<Payment> paymentsInDates = paymentRepository.findBetweenDates(startDate, endDate);
+        List<Payment> paymentsInDates = paymentRepository.findByOrderDateBetweenDates(startDate, endDate);
         //then
-        assertThat(paymentsInDates.size()).isEqualTo(2);
+        assertThat(paymentsInDates.size()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("test findByCustomerIdAndStatus")
     void givenPayment_ThenSelectByOrderIdAndPaymentMethod(){
         //given
-        Long id = order1.getId();
-        orderRepository.save(order1);
+        Order orderSaved = orderRepository.save(order1);
         payment1.setOrder(order1);
         paymentRepository.save(payment1);
-        List<Payment> payments = paymentRepository.findByOrderIdAndPaymentMethod(id, PaymentMethod.CASH);
+        List<Payment> payments = paymentRepository.findByOrderIdAndPaymentMethod(orderSaved.getId(), PaymentMethod.CASH);
         //then
         assertThat(payments.size()).isEqualTo(1);
     }
-
-
     
 }

@@ -22,15 +22,12 @@ import edu.unimagdalena.api.repository.ProductRepository;
 
 
 public class OrderItemRepositoryTest extends AbstractIntegrationDBTest{
-    
+    @Autowired
     OrderItemRepository orderItemRepository;
     @Autowired
     OrderRepository orderRepository;
     @Autowired
     ProductRepository productRepository;
-    
-    
-
     @Autowired
     public OrderItemRepositoryTest(OrderItemRepository orderItemRepository){
         this.orderItemRepository = orderItemRepository;
@@ -42,7 +39,7 @@ public class OrderItemRepositoryTest extends AbstractIntegrationDBTest{
                 .status(OrderStatus.SENT)
                 .items(null)
                 .payment(null)
-                .shipmentDetalis(null)
+                .shipmentDetails(null)
                 .build();
     
     Product product1 = Product.builder()
@@ -121,21 +118,7 @@ public class OrderItemRepositoryTest extends AbstractIntegrationDBTest{
         }
     }
 
-    @Test
-    @DisplayName("test findByOrderId")
-    void givenOrderItem_ThenFindById(){
-        //given
-        Long id = order1.getId();
-        Order saved = orderRepository.save(order1);
-        orderItem1.setOrder(saved);
-        orderItem2.setOrder(saved);
-        orderItemRepository.save(orderItem1);
-        orderItemRepository.save(orderItem2);
-        List<OrderItem> findOrderItem = orderItemRepository.findByOrderId(id);
-        //then
-        assertThat(findOrderItem.size()).isEqualTo(2);
-    }
-
+    
     @Test
     @DisplayName("test findByOrderId")
     void givenOrderItem_ThenfindByOrderId(){
@@ -146,6 +129,20 @@ public class OrderItemRepositoryTest extends AbstractIntegrationDBTest{
         orderItemRepository.save(orderItem1);
         orderItemRepository.save(orderItem2);
         List<OrderItem> findOrderItem = orderItemRepository.findByOrderId(savedOrder.getId());
+        //then
+        assertThat(findOrderItem.size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("test findByProductId")
+    void givenOrderItem_ThenfindByProductId(){
+        //given
+        Product savedProduct = productRepository.save(product1);
+        orderItem1.setProduct(savedProduct);
+        orderItem2.setProduct(savedProduct);
+        orderItemRepository.save(orderItem1);
+        orderItemRepository.save(orderItem2);
+        List<OrderItem> findOrderItem = orderItemRepository.findByProductId(savedProduct.getId());
         //then
         assertThat(findOrderItem.size()).isEqualTo(2);
     }

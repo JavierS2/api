@@ -22,4 +22,6 @@ public interface PaymentMapper {
     //@Mapping(source = "order.id", target = )
     Payment paymentToSaveDtoToPayment(PaymentToSaveDto paymentToSaveDto);
 
+    PaymentToSaveDto paymentToPaymentToSaveDto(Payment payment);
+
 }

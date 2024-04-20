@@ -4,18 +4,23 @@ import edu.unimagdalena.api.model.dto.OrderDTO;
 import edu.unimagdalena.api.model.dto.OrderItemDTO;
 import edu.unimagdalena.api.model.dto.ProductDTO;
 import edu.unimagdalena.api.model.dto_save.OrderItemToSaveDto;
+import edu.unimagdalena.api.model.entities.Customer;
 import edu.unimagdalena.api.model.entities.Order;
 import edu.unimagdalena.api.model.entities.OrderItem;
+import edu.unimagdalena.api.model.entities.Payment;
 import edu.unimagdalena.api.model.entities.Product;
+import edu.unimagdalena.api.model.entities.ShipmentDetails;
+import edu.unimagdalena.api.model.enums.OrderStatus;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-18T21:22:47-0500",
-    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.2 (Oracle Corporation)"
+    date = "2024-04-19T13:04:05-0500",
+    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.10 (Oracle Corporation)"
 )
 public class OrderItemMapperImpl implements OrderItemMapper {
 
@@ -75,6 +80,27 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         return orderItem.build();
     }
 
+    @Override
+    public OrderItemToSaveDto orderItemToOrderItemToSaveDto(OrderItem orderItem) {
+        if ( orderItem == null ) {
+            return null;
+        }
+
+        OrderDTO order = null;
+        ProductDTO product = null;
+        Integer amount = null;
+        Float unitPrice = null;
+
+        order = orderToOrderDTO( orderItem.getOrder() );
+        product = productToProductDTO( orderItem.getProduct() );
+        amount = orderItem.getAmount();
+        unitPrice = orderItem.getUnitPrice();
+
+        OrderItemToSaveDto orderItemToSaveDto = new OrderItemToSaveDto( order, product, amount, unitPrice );
+
+        return orderItemToSaveDto;
+    }
+
     protected List<OrderItem> orderItemDTOListToOrderItemList(List<OrderItemDTO> list) {
         if ( list == null ) {
             return null;
@@ -121,5 +147,66 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         product.stock( productDTO.stock() );
 
         return product.build();
+    }
+
+    protected List<OrderItemDTO> orderItemListToOrderItemDTOList(List<OrderItem> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<OrderItemDTO> list1 = new ArrayList<OrderItemDTO>( list.size() );
+        for ( OrderItem orderItem : list ) {
+            list1.add( orderItemToOrderItemDto( orderItem ) );
+        }
+
+        return list1;
+    }
+
+    protected OrderDTO orderToOrderDTO(Order order) {
+        if ( order == null ) {
+            return null;
+        }
+
+        Long id = null;
+        Customer customer = null;
+        String orderDate = null;
+        OrderStatus status = null;
+        List<OrderItemDTO> items = null;
+        Payment payment = null;
+        ShipmentDetails shipmentDetails = null;
+
+        id = order.getId();
+        customer = order.getCustomer();
+        if ( order.getOrderDate() != null ) {
+            orderDate = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( order.getOrderDate() );
+        }
+        status = order.getStatus();
+        items = orderItemListToOrderItemDTOList( order.getItems() );
+        payment = order.getPayment();
+        shipmentDetails = order.getShipmentDetails();
+
+        OrderDTO orderDTO = new OrderDTO( id, customer, orderDate, status, items, payment, shipmentDetails );
+
+        return orderDTO;
+    }
+
+    protected ProductDTO productToProductDTO(Product product) {
+        if ( product == null ) {
+            return null;
+        }
+
+        Long id = null;
+        String name = null;
+        Float price = null;
+        Integer stock = null;
+
+        id = product.getId();
+        name = product.getName();
+        price = product.getPrice();
+        stock = product.getStock();
+
+        ProductDTO productDTO = new ProductDTO( id, name, price, stock );
+
+        return productDTO;
     }
 }

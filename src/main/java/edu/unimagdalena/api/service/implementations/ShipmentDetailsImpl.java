@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 import edu.unimagdalena.api.model.dto_save.ShipmentDetailsToSaveDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.unimagdalena.api.model.entities.ShipmentDetails;
@@ -21,7 +20,6 @@ public class ShipmentDetailsImpl implements ShipmentDetailsService {
 
     private final ShipmentDetailsRepository shipmentDetailsRepository;
 
-    @Autowired
     public ShipmentDetailsImpl(ShipmentDetailsRepository shipmentDetailsRepository) {
         this.shipmentDetailsRepository = shipmentDetailsRepository;
     }

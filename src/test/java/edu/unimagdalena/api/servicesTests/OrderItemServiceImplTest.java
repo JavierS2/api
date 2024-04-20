@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import edu.unimagdalena.api.model.dto_save.OrderItemToSaveDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,35 +51,35 @@ public class OrderItemServiceImplTest {
     private OrderItemServiceImpl orderItemService;
 
     Customer customer1 = Customer.builder()
-            .id(1l)
+            .id(1L)
             .name("pepe")
             .email("pepe@example.co")
             .address("1234")
             .build();
 
     Order order1 = Order.builder()
-                .id(2l)
+                .id(2L)
                 .customer(customer1)
                 .orderDate(LocalDateTime.now())
                 .status(OrderStatus.SENT)
                 .build();
     
     Product product1 = Product.builder()
-            .id(3l)
+            .id(3L)
             .name("sopa")
             .price((float) 5.0)
             .stock(200)
             .build();
 
     OrderItem orderItem1 = OrderItem.builder()
-                .id(4l)
+                .id(4L)
                 .order(order1)
                 .product(product1)
                 .amount(4)
                 .unitPrice((float) 5.0)
                 .build();
 
-    OrderItemDTO orderItemDTO = OrderItemMapper.INSTANCE.orderItemToOrderItemDto(orderItem1);
+    OrderItemToSaveDto orderItemToSaveDto = OrderItemMapper.INSTANCE.orderItemToOrderItemToSaveDto(orderItem1);
 
     @BeforeEach
     void setUp(){
@@ -100,17 +101,17 @@ public class OrderItemServiceImplTest {
     @Test
     void testCreate() {
         //when
-        OrderItemDTO saved = orderItemService.create(orderItemDTO);
+        OrderItemDTO saved = orderItemService.create(orderItemToSaveDto);
         //then
         assertThat(saved).isNotNull();
-        assertThat(saved.id()).isEqualTo(4l);
+        assertThat(saved.id()).isEqualTo(4L);
     }
 
     @Test
     void testDelete() {
         //when
-        OrderItemDTO saved = orderItemService.create(orderItemDTO);
-        when(orderItemRepository.count()).thenReturn(4l);
+        OrderItemDTO saved = orderItemService.create(orderItemToSaveDto);
+        when(orderItemRepository.count()).thenReturn(4L);
         assertEquals(4L, orderItemRepository.count());
         //then
         orderItemService.delete(saved.id());
@@ -121,8 +122,8 @@ public class OrderItemServiceImplTest {
     @Test
     void testGetAllOrderItems() {
         //when
-        orderItemService.create(orderItemDTO);
-        orderItemService.create(orderItemDTO);
+        orderItemService.create(orderItemToSaveDto);
+        orderItemService.create(orderItemToSaveDto);
         when(orderItemRepository.findAll()).thenReturn(List.of(orderItem1));
         //then
         assertThat(orderItemService.getAllOrderItems().get(0).id()).isEqualTo(orderItem1.getId());
@@ -131,27 +132,27 @@ public class OrderItemServiceImplTest {
     @Test
     void testGetOrderItemById() {
         //when
-        orderItemService.create(orderItemDTO);
+        orderItemService.create(orderItemToSaveDto);
         when(orderItemRepository.findById(anyLong())).thenReturn(Optional.ofNullable(orderItem1));
-        OrderItemDTO orderItemFind = orderItemService.getOrderItemById(4l);
+        OrderItemDTO orderItemFind = orderItemService.getOrderItemById(4L);
         //then
-        assertThat(orderItemFind.id()).isEqualTo(4l);
+        assertThat(orderItemFind.id()).isEqualTo(4L);
     }
 
     @Test
     void testGetOrderItemsByOrderId() {
-        orderItemService.create(orderItemDTO);
+        orderItemService.create(orderItemToSaveDto);
         when(orderItemRepository.findByOrderId(anyLong())).thenReturn(List.of(orderItem1));
-        List<OrderItemDTO> orderItemFind = orderItemService.getOrderItemsByOrderId(4l);
+        List<OrderItemDTO> orderItemFind = orderItemService.getOrderItemsByOrderId(4L);
         //then
         assertThat(orderItemFind.size()).isEqualTo(1);
     }
 
     @Test
     void testGetOrderItemsByProductId() {
-        orderItemService.create(orderItemDTO);
+        orderItemService.create(orderItemToSaveDto);
         when(orderItemRepository.findByProductId(anyLong())).thenReturn(List.of(orderItem1));
-        List<OrderItemDTO> orderItemFind = orderItemService.getOrderItemsByProductId(4l);
+        List<OrderItemDTO> orderItemFind = orderItemService.getOrderItemsByProductId(4L);
         //then
         assertThat(orderItemFind.size()).isEqualTo(1);
     }
@@ -159,10 +160,10 @@ public class OrderItemServiceImplTest {
     @Test
     void testUpdate() {
         //when
-        orderItemService.create(orderItemDTO);
+        orderItemService.create(orderItemToSaveDto);
         when(orderItemRepository.findById(anyLong())).thenReturn(Optional.ofNullable(orderItem1));
-        OrderItemDTO orderItemFind = orderItemService.update(orderItemDTO, 4l);
+        OrderItemDTO orderItemFind = orderItemService.update(orderItemToSaveDto, 4L);
         //then
-        assertEquals(4l, orderItemFind.id());
+        assertEquals(4L, orderItemFind.id());
     }
 }

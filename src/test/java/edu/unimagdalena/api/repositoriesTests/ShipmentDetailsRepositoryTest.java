@@ -20,6 +20,7 @@ import edu.unimagdalena.api.repository.ShipmentDetailsRepository;
 public class ShipmentDetailsRepositoryTest extends AbstractIntegrationDBTest{
 
     ShipmentDetailsRepository shipmentDetailsRepository;
+
     @Autowired
     OrderRepository orderRepository;
 
@@ -34,7 +35,7 @@ public class ShipmentDetailsRepositoryTest extends AbstractIntegrationDBTest{
                 .status(OrderStatus.SENT)
                 .items(null)
                 .payment(null)
-                .shipmentDetalis(null)
+                .shipmentDetails(null)
                 .build();
     
     ShipmentDetails shipmentDetails1 = ShipmentDetails.builder()

@@ -5,23 +5,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import static org.assertj.core.api.Assertions.*;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import edu.unimagdalena.api.AbstractIntegrationDBTest;
 import edu.unimagdalena.api.model.entities.Customer;
 import edu.unimagdalena.api.repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 class CustomerRepositoryTest extends AbstractIntegrationDBTest{
-    
-    CustomerRepository customerRepository;
 
+
+    CustomerRepository customerRepository;
+    
     @Autowired
     public CustomerRepositoryTest(CustomerRepository customerRepository){
-        this.customerRepository = customerRepository;
+       this.customerRepository = customerRepository;
     }
 
     Customer customer1 = Customer.builder()
-            .id(1l)
+            .id(1L)
             .name("pepe")
             .email("pepe@example.co")
             .address("1234")

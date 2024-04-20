@@ -22,4 +22,6 @@ public interface CustomerMapper {
     @Mapping(target = "orders", ignore = true)
     Customer customerToSaveDtoToCustomer(CustomerToSaveDto customerToSaveDto);
 
+    CustomerToSaveDto customerToCustomerToSaveDto(Customer customer);
+
 }

@@ -1,14 +1,15 @@
 package edu.unimagdalena.api.servicesTests;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
 
+import edu.unimagdalena.api.model.dto_save.ProductToSaveDto;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,22 +36,21 @@ public class ProductServiceImplTest {
     ProductServiceImpl productService;
 
     Product product1 = Product.builder()
-            .id(1l)
+            .id(1L)
             .name("pasta")
             .price((float) 6.0)
             .stock(260)
             .build();
 
     Product product2 = Product.builder()
-            .id(2l)
+            .id(2L)
             .name("sopa")
             .price((float) 5.0)
             .stock(200)
             .build();
 
-    ProductDTO productDTO = ProductMapper.INSTANCE.productToProductDto(product1);
-    ProductDTO productDTO1 = ProductMapper.INSTANCE.productToProductDto(product2);
-
+    ProductToSaveDto productToSaveDto = ProductMapper.INSTANCE.productToProductToSaveDto(product1);
+    ProductToSaveDto productToSaveDto1 = ProductMapper.INSTANCE.productToProductToSaveDto(product2);
 
     @BeforeEach
     void setUp(){
@@ -62,28 +62,28 @@ public class ProductServiceImplTest {
     @Test
     void testCreate() {
         //given
-        ProductDTO saved = productService.create(productDTO);
+        ProductDTO saved = productService.create(productToSaveDto);
         //then
         assertThat(saved).isNotNull();
-        assertEquals(1l, saved.id());
+        assertEquals(1L, saved.id());
     }
 
     @Test
     void testDelete() {
         //when
-        ProductDTO saved = productService.create(productDTO);
-        when(productRepository.count()).thenReturn(1l);
-        assertEquals(1l, productRepository.count());
+        ProductDTO saved = productService.create(productToSaveDto);
+        when(productRepository.count()).thenReturn(1L);
+        assertEquals(1L, productRepository.count());
         //then
         productService.delete(saved.id());
-        when(productRepository.count()).thenReturn(0l);
-        assertEquals(0l, productRepository.count());
+        when(productRepository.count()).thenReturn(0L);
+        assertEquals(0L, productRepository.count());
     }
 
     @Test
     void testGetAllProducts() {
         //given
-        productService.create(productDTO);
+        productService.create(productToSaveDto);
         //when
         List<ProductDTO> res = productService.getAllProducts();
         //then
@@ -93,19 +93,19 @@ public class ProductServiceImplTest {
     @Test
     void testGetByMaxPriceAndStock() {
         //given
-        productService.create(productDTO);
+        productService.create(productToSaveDto);
         //when
         when(productRepository.findByMaxPriceAndStock(anyFloat(), anyInt())).thenReturn(List.of(product1));
         List<ProductDTO> res = productService.getByMaxPriceAndStock(1f, 1);
         //then
-        assertNotNull(res);
+        Assertions.assertNotNull(res);
         assertEquals(1L, res.get(0).id());
     }
 
     @Test
     void testGetProductById() {
         //given
-        ProductDTO saved = productService.create(productDTO);
+        ProductDTO saved = productService.create(productToSaveDto);
         when(productRepository.findById(anyLong())).thenReturn(Optional.ofNullable(product1));
         //when
         ProductDTO res = productService.getProductById(saved.id());
@@ -116,7 +116,7 @@ public class ProductServiceImplTest {
     @Test
     void testGetProductsInStock() {
         //given
-        productService.create(productDTO);
+        productService.create(productToSaveDto);
         //when
         when(productRepository.findProductsInStock()).thenReturn(List.of(product1, product2));
         List<ProductDTO> res = productService.getProductsInStock();
@@ -128,9 +128,9 @@ public class ProductServiceImplTest {
     @Test
     void testUpdate() {
         //given
-        productService.create(productDTO);
+        productService.create(productToSaveDto);
         //when
-        ProductDTO productUpdate = productService.update(productDTO1, 1l);
+        ProductDTO productUpdate = productService.update(productToSaveDto1, 1L);
         //then
         assertEquals("sopa", productUpdate.name());
     }

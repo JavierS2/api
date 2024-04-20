@@ -1,8 +1,7 @@
 package edu.unimagdalena.api.servicesTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -10,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import edu.unimagdalena.api.model.dto_save.PaymentToSaveDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,14 +43,14 @@ public class PaymentServiceImplTest {
     PaymentServiceImpl paymentService;
 
     Order order1 = Order.builder()
-                .id(1l)
+                .id(1L)
                 .customer(null)
                 .orderDate(LocalDateTime.now())
                 .status(OrderStatus.SENT)
                 .build();
 
     Payment payment1 = Payment.builder()
-                .id(2l)
+                .id(2L)
                 .order(order1)
                 .paymentDate(LocalDateTime.now())
                 .totalPayment(50f)
@@ -58,17 +58,15 @@ public class PaymentServiceImplTest {
                 .build();
 
     Payment payment2 = Payment.builder()
-                .id(3l)
+                .id(3L)
                 .order(order1)
                 .paymentDate(LocalDateTime.now())
                 .totalPayment(50f)
                 .paymentMethod(PaymentMethod.NEQUI)
                 .build();
 
-    PaymentDTO paymentDTO = PaymentMapper.INSTANCE.paymentToPaymentDto(payment1);
-    PaymentDTO paymentDTO1 = PaymentMapper.INSTANCE.paymentToPaymentDto(payment2);
-
-
+    PaymentToSaveDto paymentToSaveDto = PaymentMapper.INSTANCE.paymentToPaymentToSaveDto(payment1);
+    PaymentToSaveDto paymentToSaveDto1 = PaymentMapper.INSTANCE.paymentToPaymentToSaveDto(payment2);
 
     @BeforeEach
     void setUp(){
@@ -81,28 +79,28 @@ public class PaymentServiceImplTest {
     @Test
     void testCreate() {
         //given
-        PaymentDTO saved = paymentService.create(paymentDTO);
+        PaymentDTO saved = paymentService.create(paymentToSaveDto);
         //then
         assertThat(saved).isNotNull();
-        assertEquals(2l, saved.id());
+        assertEquals(2L, saved.id());
     }
 
     @Test
     void testDelete() {
         //when
-        PaymentDTO saved = paymentService.create(paymentDTO);
-        when(paymentRepository.count()).thenReturn(2l);
-        assertEquals(2l, paymentRepository.count());
+        PaymentDTO saved = paymentService.create(paymentToSaveDto);
+        when(paymentRepository.count()).thenReturn(2L);
+        assertEquals(2L, paymentRepository.count());
         //then
         paymentService.delete(saved.id());
-        when(paymentRepository.count()).thenReturn(0l);
-        assertEquals(0l, paymentRepository.count());
+        when(paymentRepository.count()).thenReturn(0L);
+        assertEquals(0L, paymentRepository.count());
     }
 
     @Test
     void testGetAllPayments() {
         //given
-        paymentService.create(paymentDTO);
+        paymentService.create(paymentToSaveDto);
         //when
         List<PaymentDTO> res = paymentService.getAllPayments();
         //then
@@ -112,19 +110,19 @@ public class PaymentServiceImplTest {
     @Test
     void testGetByOrderIdAndPaymentMethod() {
         //given
-        PaymentDTO saved = paymentService.create(paymentDTO);
+        PaymentDTO saved = paymentService.create(paymentToSaveDto);
         when(paymentRepository.findByOrderIdAndPaymentMethod(anyLong(), any(PaymentMethod.class))).thenReturn(List.of(payment1));
         //when
         List<PaymentDTO> res = paymentService.getByOrderIdAndPaymentMethod(order1.getId(), saved.paymentMethod());
         //then
         assertNotNull(res);
-        assertEquals(2l, res.get(0).id());
+        assertEquals(2L, res.get(0).id());
     }
 
     @Test
     void testGetPaymentById() {
         //given
-        PaymentDTO saved = paymentService.create(paymentDTO);
+        PaymentDTO saved = paymentService.create(paymentToSaveDto);
         when(paymentRepository.findById(saved.id())).thenReturn(Optional.ofNullable(payment1));
         //when
         PaymentDTO res = paymentService.getPaymentById(saved.id());
@@ -135,19 +133,19 @@ public class PaymentServiceImplTest {
     @Test
     void testGetPaymentByOrderId() {
         //when
-        paymentService.create(paymentDTO);
+        paymentService.create(paymentToSaveDto);
         when(paymentRepository.findByOrderId(anyLong())).thenReturn(payment1);
         PaymentDTO payment = paymentService.getPaymentByOrderId(order1.getId());
         //then
         assertNotNull(payment);
-        assertEquals(1l, payment.orderId());
+        assertEquals(1L, payment.order().getId());
     }
 
     @Test
     void testGetPaymentsBetweenDates() {
         //when
-        paymentService.create(paymentDTO);
-        when(paymentRepository.findBetweenDates(any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(List.of(payment1));
+        paymentService.create(paymentToSaveDto);
+        when(paymentRepository.findByOrderDateBetweenDates(any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(List.of(payment1));
         List<PaymentDTO> res = paymentService.getPaymentsBetweenDates(LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1));
         //then
         assertNotNull(res);
@@ -157,9 +155,9 @@ public class PaymentServiceImplTest {
     @Test
     void testUpdate() {
         //given
-        paymentService.create(paymentDTO);
+        paymentService.create(paymentToSaveDto);
         //when
-        PaymentDTO paymentUpdate = paymentService.update(paymentDTO1, 2l);
+        PaymentDTO paymentUpdate = paymentService.update(paymentToSaveDto1, 2L);
         //then
         assertEquals(PaymentMethod.NEQUI, paymentUpdate.paymentMethod());
     }

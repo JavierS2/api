@@ -18,8 +18,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-18T21:10:16-0500",
-    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.2 (Oracle Corporation)"
+    date = "2024-04-19T13:04:05-0500",
+    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.10 (Oracle Corporation)"
 )
 public class CustomerMapperImpl implements CustomerMapper {
 
@@ -75,6 +75,25 @@ public class CustomerMapperImpl implements CustomerMapper {
         customer.address( customerToSaveDto.address() );
 
         return customer.build();
+    }
+
+    @Override
+    public CustomerToSaveDto customerToCustomerToSaveDto(Customer customer) {
+        if ( customer == null ) {
+            return null;
+        }
+
+        String name = null;
+        String email = null;
+        String address = null;
+
+        name = customer.getName();
+        email = customer.getEmail();
+        address = customer.getAddress();
+
+        CustomerToSaveDto customerToSaveDto = new CustomerToSaveDto( name, email, address );
+
+        return customerToSaveDto;
     }
 
     protected OrderItemDTO orderItemToOrderItemDTO(OrderItem orderItem) {

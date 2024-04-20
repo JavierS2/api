@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 import edu.unimagdalena.api.model.dto_save.CustomerToSaveDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.unimagdalena.api.model.entities.Customer;
@@ -20,7 +19,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }

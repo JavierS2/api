@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 
+import edu.unimagdalena.api.model.dto_save.CustomerToSaveDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +36,7 @@ public class CustomerServiceImplTest {
     private CustomerServiceImpl customerService;
 
     Customer customer1 = Customer.builder()
-            .id(1l)
+            .id(1L)
             .name("pepe")
             .email("pepe@example.co")
             .address("1234")
@@ -47,7 +48,7 @@ public class CustomerServiceImplTest {
             .address("1234")
             .build();
     
-    CustomerDTO customerDTO = CustomerMapper.INSTANCE.customerToCustomerDto(customer1);  
+    CustomerToSaveDto customerToSaveDto = CustomerMapper.INSTANCE.customerToCustomerToSaveDto(customer1);
     
     @BeforeEach
     void setUp() {
@@ -59,16 +60,16 @@ public class CustomerServiceImplTest {
     @Test
     void testCreate() {
         //when
-        CustomerDTO saved = customerService.create(customerDTO);
+        CustomerDTO saved = customerService.create(customerToSaveDto);
         //then
         assertThat(saved).isNotNull();
-        assertThat(saved.id()).isEqualTo(1l);
+        assertThat(saved.id()).isEqualTo(1L);
     }
 
     @Test
     void testDelete() {
         //when
-        CustomerDTO saved = customerService.create(customerDTO);
+        CustomerDTO saved = customerService.create(customerToSaveDto);
         when(customerRepository.count()).thenReturn(1L);
         assertEquals(1L, customerRepository.count());
         //then
@@ -80,8 +81,8 @@ public class CustomerServiceImplTest {
     @Test
     void testGetAllCustomers() {
         //when
-        customerService.create(customerDTO);
-        customerService.create(customerDTO);
+        customerService.create(customerToSaveDto);
+        customerService.create(customerToSaveDto);
         //then
         assertThat(customerService.getAllCustomers().size()).isEqualTo(1);
     }
@@ -89,27 +90,27 @@ public class CustomerServiceImplTest {
     @Test
     void testGetCustomerByEmail() {
         //when
-        customerService.create(customerDTO);
+        customerService.create(customerToSaveDto);
         when(customerRepository.findByEmail(anyString())).thenReturn(customer1);
         CustomerDTO customerFind = customerService.getCustomerByEmail("address1");
         //then
-        assertThat(customerFind.id()).isEqualTo(1l);
+        assertThat(customerFind.id()).isEqualTo(1L);
     }
 
     @Test
     void testGetCustomerById() {
         //when
-        customerService.create(customerDTO);
+        customerService.create(customerToSaveDto);
         when(customerRepository.findById(anyLong())).thenReturn(Optional.ofNullable(customer1));
-        CustomerDTO customerFind = customerService.getCustomerById(1l);
+        CustomerDTO customerFind = customerService.getCustomerById(1L);
         //then
-        assertThat(customerFind.id()).isEqualTo(1l);
+        assertThat(customerFind.id()).isEqualTo(1L);
     }
 
     @Test
     void testGetCustomersByAddress() {
         //when
-        customerService.create(customerDTO);
+        customerService.create(customerToSaveDto);
         when(customerRepository.findByAddress(anyString())).thenReturn(List.of(customer1, customer2));
         List<CustomerDTO> customerFind = customerService.getCustomersByAddress("1234");
         //then
@@ -120,7 +121,7 @@ public class CustomerServiceImplTest {
     void testGetCustomersByNameStartsWith() {
         //when
         when(customerRepository.findByNameStartsWith(anyString())).thenReturn(List.of(customer1));
-        customerService.create(customerDTO);
+        customerService.create(customerToSaveDto);
         //then
         assertEquals(1,customerService.getCustomersByNameStartsWith("pepe").size());
     }
@@ -128,9 +129,9 @@ public class CustomerServiceImplTest {
     @Test
     void testUpdate() {
         //when
-        customerService.create(customerDTO);
+        customerService.create(customerToSaveDto);
         when(customerRepository.findById(anyLong())).thenReturn(Optional.ofNullable(customer1));
-        CustomerDTO customerFind = customerService.update(customerDTO, 1l);
+        CustomerDTO customerFind = customerService.update(customerToSaveDto, 1L);
         //then
         assertEquals("pepe@example.co", customerFind.email());
     }

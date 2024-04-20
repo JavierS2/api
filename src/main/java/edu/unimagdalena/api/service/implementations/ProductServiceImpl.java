@@ -3,7 +3,6 @@ package edu.unimagdalena.api.service.implementations;
 import java.util.List;
 
 import edu.unimagdalena.api.model.dto_save.ProductToSaveDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.unimagdalena.api.model.entities.Product;
@@ -19,7 +18,6 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
-    @Autowired
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }

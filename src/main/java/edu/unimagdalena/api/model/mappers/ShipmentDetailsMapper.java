@@ -22,4 +22,6 @@ public interface ShipmentDetailsMapper {
     @Mapping(target = "id", ignore = true)
     ShipmentDetails shipmentDetailsToSaveDtoToShipmentDetails(ShipmentDetailsToSaveDto shipmentDetailsToSaveDto);
 
+    ShipmentDetailsToSaveDto shipmentDetailsToShipmentDetailsToSaveDto(ShipmentDetails shipmentDetails);
+
 }

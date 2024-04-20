@@ -22,4 +22,6 @@ public interface ProductMapper {
     @Mapping(target = "orderItems", ignore = true)
     Product productToSaveDtoToProduct(ProductToSaveDto productToSaveDto);
 
+    ProductToSaveDto productToProductToSaveDto(Product product);
+
 }

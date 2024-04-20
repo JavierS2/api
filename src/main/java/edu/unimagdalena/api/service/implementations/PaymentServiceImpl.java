@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import edu.unimagdalena.api.model.dto_save.PaymentToSaveDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.unimagdalena.api.model.entities.Payment;
@@ -21,7 +20,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
 
-    @Autowired
     public PaymentServiceImpl(PaymentRepository paymentRepository) {
         this.paymentRepository = paymentRepository;
     }
@@ -72,7 +70,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public List<PaymentDTO> getPaymentsBetweenDates(LocalDateTime startDate, LocalDateTime endDate) {
-        List<Payment> payments = paymentRepository.findBetweenDates(startDate, endDate);
+        List<Payment> payments = paymentRepository.findByOrderDateBetweenDates(startDate, endDate);
         return payments.stream()
                 .map(PaymentMapper.INSTANCE::paymentToPaymentDto)
                 .toList();

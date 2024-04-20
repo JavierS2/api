@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import edu.unimagdalena.api.model.dto_save.ShipmentDetailsToSaveDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,13 +42,13 @@ public class ShipmentDetailsImplTest {
     ShipmentDetailsImpl shipmentDetailsService;
 
     Order order1 = Order.builder()
-                .id(1l)
+                .id(1L)
                 .orderDate(LocalDateTime.now())
                 .status(OrderStatus.SENT)
                 .build();
     
     ShipmentDetails shipmentDetails1 = ShipmentDetails.builder()
-                    .id(2l)
+                    .id(2L)
                     .order(order1)
                     .shipmentAddress("1234")
                     .transporter("coordinadora")
@@ -55,16 +56,15 @@ public class ShipmentDetailsImplTest {
                     .build();
 
     ShipmentDetails shipmentDetails2 = ShipmentDetails.builder()
-                    .id(3l)
+                    .id(3L)
                     .order(order1)
                     .shipmentAddress("12345")
                     .transporter("servi entrega")
                     .guideNumber((long) 12345)
-                    .build();   
+                    .build();
 
-    ShipmentDetailsDTO shipmentDetailsDTO = ShipmentDetailsMapper.INSTANCE.shipmentDetailsToShipmentDetailsDto(shipmentDetails1);
-    ShipmentDetailsDTO shipmentDetailsDTO1 = ShipmentDetailsMapper.INSTANCE.shipmentDetailsToShipmentDetailsDto(shipmentDetails2);
-
+    ShipmentDetailsToSaveDto shipmentDetailsToSaveDto = ShipmentDetailsMapper.INSTANCE.shipmentDetailsToShipmentDetailsToSaveDto(shipmentDetails1);
+    ShipmentDetailsToSaveDto shipmentDetailsToSaveDto1 = ShipmentDetailsMapper.INSTANCE.shipmentDetailsToShipmentDetailsToSaveDto(shipmentDetails2);
 
     @BeforeEach
     void setUp(){
@@ -79,28 +79,28 @@ public class ShipmentDetailsImplTest {
     @Test
     void testCreate() {
         //given
-        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsDTO);
+        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsToSaveDto);
         //then
         assertThat(saved).isNotNull();
-        assertEquals(2l, saved.id());
+        assertEquals(2L, saved.id());
     }
 
     @Test
     void testDelete() {
         //when
-        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsDTO);
-        when(shipmentDetailsRepository.count()).thenReturn(2l);
-        assertEquals(2l, shipmentDetailsRepository.count());
+        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsToSaveDto);
+        when(shipmentDetailsRepository.count()).thenReturn(2L);
+        assertEquals(2L, shipmentDetailsRepository.count());
         //then
         shipmentDetailsService.delete(saved.id());
-        when(shipmentDetailsRepository.count()).thenReturn(0l);
-        assertEquals(0l, shipmentDetailsRepository.count());
+        when(shipmentDetailsRepository.count()).thenReturn(0L);
+        assertEquals(0L, shipmentDetailsRepository.count());
     }
 
     @Test
     void testGetAllShipmentDetails() {
         //given
-        shipmentDetailsService.create(shipmentDetailsDTO);
+        shipmentDetailsService.create(shipmentDetailsToSaveDto);
         //when
         List<ShipmentDetailsDTO> res = shipmentDetailsService.getAllShipmentDetails();
         //then
@@ -110,10 +110,10 @@ public class ShipmentDetailsImplTest {
     @Test
     void testGetByOrderId() {
         //given
-        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsDTO);
+        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsToSaveDto);
         when(shipmentDetailsRepository.findByOrderId(anyLong())).thenReturn(shipmentDetails1);
         //when
-        ShipmentDetailsDTO res = shipmentDetailsService.getByOrderId(1l);
+        ShipmentDetailsDTO res = shipmentDetailsService.getByOrderId(1L);
         //then
         assertEquals(saved.id(), res.id());
     }
@@ -121,7 +121,7 @@ public class ShipmentDetailsImplTest {
     @Test
     void testGetByOrderStatus() {
         //given
-        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsDTO);
+        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsToSaveDto);
         when(shipmentDetailsRepository.findByOrderStatus(any(OrderStatus.class))).thenReturn(List.of(shipmentDetails1));
         //when
         List<ShipmentDetailsDTO> res = shipmentDetailsService.getByOrderStatus(OrderStatus.SENT);
@@ -132,7 +132,7 @@ public class ShipmentDetailsImplTest {
     @Test
     void testGetByTransporter() {
         //given
-        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsDTO);
+        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsToSaveDto);
         when(shipmentDetailsRepository.findByTransporter(anyString())).thenReturn(List.of(shipmentDetails1));
         //when
         List<ShipmentDetailsDTO> res = shipmentDetailsService.getByTransporter(saved.transporter());
@@ -143,7 +143,7 @@ public class ShipmentDetailsImplTest {
     @Test
     void testGetShipmentDetailById() {
         //given
-        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsDTO);
+        ShipmentDetailsDTO saved = shipmentDetailsService.create(shipmentDetailsToSaveDto);
         when(shipmentDetailsRepository.findById(anyLong())).thenReturn(Optional.ofNullable(shipmentDetails1));
         //when
         ShipmentDetailsDTO res = shipmentDetailsService.getShipmentDetailById(saved.id());
@@ -154,10 +154,10 @@ public class ShipmentDetailsImplTest {
     @Test
     void testUpdate() {
         //given
-        shipmentDetailsService.create(shipmentDetailsDTO);
+        shipmentDetailsService.create(shipmentDetailsToSaveDto);
         //when
-        ShipmentDetailsDTO shipmentDetailsUpdate = shipmentDetailsService.update(shipmentDetailsDTO1, 2l);
+        ShipmentDetailsDTO shipmentDetailsUpdate = shipmentDetailsService.update(shipmentDetailsToSaveDto1, 2L);
         //then
-        assertEquals(12345l, shipmentDetailsUpdate.guideNumber());
+        assertEquals(12345L, shipmentDetailsUpdate.guideNumber());
     }
 }

@@ -3,7 +3,6 @@ package edu.unimagdalena.api.service.implementations;
 import java.util.List;
 
 import edu.unimagdalena.api.model.dto_save.OrderItemToSaveDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.unimagdalena.api.model.entities.OrderItem;
@@ -19,7 +18,6 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     private final OrderItemRepository orderItemRepository;
 
-    @Autowired
     public OrderItemServiceImpl(OrderItemRepository orderItemRepository, OrderItemMapper orderItemMapper) {
         this.orderItemRepository = orderItemRepository;
     }

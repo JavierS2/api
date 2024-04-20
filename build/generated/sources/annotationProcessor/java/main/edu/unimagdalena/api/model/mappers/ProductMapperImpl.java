@@ -7,8 +7,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-18T21:10:16-0500",
-    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.2 (Oracle Corporation)"
+    date = "2024-04-19T13:04:05-0500",
+    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.10 (Oracle Corporation)"
 )
 public class ProductMapperImpl implements ProductMapper {
 
@@ -62,5 +62,24 @@ public class ProductMapperImpl implements ProductMapper {
         product.stock( productToSaveDto.stock() );
 
         return product.build();
+    }
+
+    @Override
+    public ProductToSaveDto productToProductToSaveDto(Product product) {
+        if ( product == null ) {
+            return null;
+        }
+
+        String name = null;
+        Float price = null;
+        Integer stock = null;
+
+        name = product.getName();
+        price = product.getPrice();
+        stock = product.getStock();
+
+        ProductToSaveDto productToSaveDto = new ProductToSaveDto( name, price, stock );
+
+        return productToSaveDto;
     }
 }

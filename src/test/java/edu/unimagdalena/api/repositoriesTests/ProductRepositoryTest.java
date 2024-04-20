@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.unimagdalena.api.AbstractIntegrationDBTest;
 
@@ -18,6 +19,7 @@ public class ProductRepositoryTest extends AbstractIntegrationDBTest {
 
     ProductRepository productRepository;
 
+    @Autowired
     public ProductRepositoryTest(ProductRepository productRepository){
         this.productRepository = productRepository;
     }

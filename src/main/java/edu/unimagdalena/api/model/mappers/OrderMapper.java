@@ -28,4 +28,7 @@ public interface OrderMapper {
     Order orderToSaveDtoToOrder(OrderToSaveDto orderToSaveDto);
 
 
+    OrderToSaveDto orderToOrderToSaveDto(Order order);
+
+
 }

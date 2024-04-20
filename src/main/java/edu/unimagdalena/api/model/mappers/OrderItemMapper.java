@@ -8,8 +8,6 @@ import org.mapstruct.factory.Mappers;
 import edu.unimagdalena.api.model.entities.OrderItem;
 import edu.unimagdalena.api.model.dto.OrderItemDTO;
 
-import java.util.List;
-
 @Mapper
 public interface OrderItemMapper {
 
@@ -27,5 +25,5 @@ public interface OrderItemMapper {
     @Mapping(target = "product.orderItems", ignore = true)
     OrderItem orderItemToSaveDtoToOrderItem(OrderItemToSaveDto orderItemToSaveDto);
 
-    //List<OrderItemDTO> listOrderItemsToListOrderItemDto(List<OrderItem> orderItems);
+    OrderItemToSaveDto orderItemToOrderItemToSaveDto(OrderItem orderItem);
 }

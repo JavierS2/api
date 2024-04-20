@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import edu.unimagdalena.api.model.dto_save.OrderToSaveDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.unimagdalena.api.model.entities.Order;
@@ -21,7 +20,6 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
-    @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper) {
         this.orderRepository = orderRepository;
     }
