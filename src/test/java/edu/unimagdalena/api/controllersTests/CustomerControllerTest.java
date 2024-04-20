@@ -1,34 +1,27 @@
-// package edu.unimagdalena.api.controllersTests;
+package edu.unimagdalena.api.controllersTests;
 
-// import edu.unimagdalena.api.controller.CustomerController;
-// import edu.unimagdalena.api.service.services.CustomerService;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.extension.ExtendWith;
-// import org.mockito.InjectMocks;
-// import org.mockito.Mock;
-// import org.mockito.junit.jupiter.MockitoExtension;
-// import org.mockito.junit.jupiter.MockitoSettings;
-// import org.mockito.quality.Strictness;
+import edu.unimagdalena.api.controller.CustomerController;
+import edu.unimagdalena.api.service.services.CustomerService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-// import java.util.List;
-// import java.util.Optional;
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+public class CustomerControllerTest {
 
-// import static org.mockito.ArgumentMatchers.any;
-// import static org.mockito.ArgumentMatchers.anyLong;
-// import static org.mockito.Mockito.when;
+    @MockBean
+    private CustomerService customerService;
 
-// @ExtendWith(MockitoExtension.class)
-// @MockitoSettings(strictness = Strictness.LENIENT)
-// public class CustomerControllerTest {
+    @InjectMocks
+    private CustomerController customerController;
 
-//         @Mock
-//         private CustomerService customerService;
+    @BeforeEach
+    void setUp() {
 
-//         @InjectMocks
-//         private CustomerController customerController;
-
-//     @BeforeEach
-//     void setUp() {
-
-//     }
-// }
+    }
+}

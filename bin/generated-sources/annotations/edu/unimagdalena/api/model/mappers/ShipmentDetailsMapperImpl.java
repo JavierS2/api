@@ -1,7 +1,10 @@
 package edu.unimagdalena.api.model.mappers;
 
+import edu.unimagdalena.api.model.dto.CustomerDTO;
 import edu.unimagdalena.api.model.dto.OrderDTO;
 import edu.unimagdalena.api.model.dto.OrderItemDTO;
+import edu.unimagdalena.api.model.dto.PaymentDTO;
+import edu.unimagdalena.api.model.dto.ProductDTO;
 import edu.unimagdalena.api.model.dto.ShipmentDetailsDTO;
 import edu.unimagdalena.api.model.dto_save.ShipmentDetailsToSaveDto;
 import edu.unimagdalena.api.model.entities.Customer;
@@ -11,15 +14,15 @@ import edu.unimagdalena.api.model.entities.Payment;
 import edu.unimagdalena.api.model.entities.Product;
 import edu.unimagdalena.api.model.entities.ShipmentDetails;
 import edu.unimagdalena.api.model.enums.OrderStatus;
+import edu.unimagdalena.api.model.enums.PaymentMethod;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-19T19:42:03-0500",
+    date = "2024-04-20T13:25:46-0500",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.38.0.v20240325-1403, environment: Java 17.0.10 (Eclipse Adoptium)"
 )
 public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
@@ -34,7 +37,7 @@ public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
 
         shipmentDetails.guideNumber( shipmentDetailsDTO.guideNumber() );
         shipmentDetails.id( shipmentDetailsDTO.id() );
-        shipmentDetails.order( shipmentDetailsDTO.order() );
+        shipmentDetails.order( orderDTOToOrder( shipmentDetailsDTO.order() ) );
         shipmentDetails.shipmentAddress( shipmentDetailsDTO.shipmentAddress() );
         shipmentDetails.transporter( shipmentDetailsDTO.transporter() );
 
@@ -48,13 +51,13 @@ public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
         }
 
         Long id = null;
-        Order order = null;
+        OrderDTO order = null;
         String shipmentAddress = null;
         String transporter = null;
         Long guideNumber = null;
 
         id = shipmentDetails.getId();
-        order = shipmentDetails.getOrder();
+        order = orderToOrderDTO( shipmentDetails.getOrder() );
         shipmentAddress = shipmentDetails.getShipmentAddress();
         transporter = shipmentDetails.getTransporter();
         guideNumber = shipmentDetails.getGuideNumber();
@@ -101,6 +104,36 @@ public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
         return shipmentDetailsToSaveDto;
     }
 
+    protected Customer customerDTOToCustomer(CustomerDTO customerDTO) {
+        if ( customerDTO == null ) {
+            return null;
+        }
+
+        Customer.CustomerBuilder customer = Customer.builder();
+
+        customer.address( customerDTO.address() );
+        customer.email( customerDTO.email() );
+        customer.id( customerDTO.id() );
+        customer.name( customerDTO.name() );
+
+        return customer.build();
+    }
+
+    protected Product productDTOToProduct(ProductDTO productDTO) {
+        if ( productDTO == null ) {
+            return null;
+        }
+
+        Product.ProductBuilder product = Product.builder();
+
+        product.id( productDTO.id() );
+        product.name( productDTO.name() );
+        product.price( productDTO.price() );
+        product.stock( productDTO.stock() );
+
+        return product.build();
+    }
+
     protected OrderItem orderItemDTOToOrderItem(OrderItemDTO orderItemDTO) {
         if ( orderItemDTO == null ) {
             return null;
@@ -110,8 +143,8 @@ public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
 
         orderItem.amount( orderItemDTO.amount() );
         orderItem.id( orderItemDTO.id() );
-        orderItem.order( orderItemDTO.order() );
-        orderItem.product( orderItemDTO.product() );
+        orderItem.order( orderDTOToOrder( orderItemDTO.order() ) );
+        orderItem.product( productDTOToProduct( orderItemDTO.product() ) );
         orderItem.unitPrice( orderItemDTO.unitPrice() );
 
         return orderItem.build();
@@ -130,6 +163,22 @@ public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
         return list1;
     }
 
+    protected Payment paymentDTOToPayment(PaymentDTO paymentDTO) {
+        if ( paymentDTO == null ) {
+            return null;
+        }
+
+        Payment.PaymentBuilder payment = Payment.builder();
+
+        payment.id( paymentDTO.id() );
+        payment.order( orderDTOToOrder( paymentDTO.order() ) );
+        payment.paymentDate( paymentDTO.paymentDate() );
+        payment.paymentMethod( paymentDTO.paymentMethod() );
+        payment.totalPayment( paymentDTO.totalPayment() );
+
+        return payment.build();
+    }
+
     protected Order orderDTOToOrder(OrderDTO orderDTO) {
         if ( orderDTO == null ) {
             return null;
@@ -137,17 +186,55 @@ public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
 
         Order.OrderBuilder order = Order.builder();
 
-        order.customer( orderDTO.customer() );
+        order.customer( customerDTOToCustomer( orderDTO.customer() ) );
         order.id( orderDTO.id() );
         order.items( orderItemDTOListToOrderItemList( orderDTO.items() ) );
-        if ( orderDTO.orderDate() != null ) {
-            order.orderDate( LocalDateTime.parse( orderDTO.orderDate() ) );
-        }
-        order.payment( orderDTO.payment() );
-        order.shipmentDetails( orderDTO.shipmentDetails() );
+        order.orderDate( orderDTO.orderDate() );
+        order.payment( paymentDTOToPayment( orderDTO.payment() ) );
+        order.shipmentDetails( shipmentDetailsDtoToShipmentDetails( orderDTO.shipmentDetails() ) );
         order.status( orderDTO.status() );
 
         return order.build();
+    }
+
+    protected CustomerDTO customerToCustomerDTO(Customer customer) {
+        if ( customer == null ) {
+            return null;
+        }
+
+        Long id = null;
+        String name = null;
+        String email = null;
+        String address = null;
+
+        id = customer.getId();
+        name = customer.getName();
+        email = customer.getEmail();
+        address = customer.getAddress();
+
+        CustomerDTO customerDTO = new CustomerDTO( id, name, email, address );
+
+        return customerDTO;
+    }
+
+    protected ProductDTO productToProductDTO(Product product) {
+        if ( product == null ) {
+            return null;
+        }
+
+        Long id = null;
+        String name = null;
+        Float price = null;
+        Integer stock = null;
+
+        id = product.getId();
+        name = product.getName();
+        price = product.getPrice();
+        stock = product.getStock();
+
+        ProductDTO productDTO = new ProductDTO( id, name, price, stock );
+
+        return productDTO;
     }
 
     protected OrderItemDTO orderItemToOrderItemDTO(OrderItem orderItem) {
@@ -156,14 +243,14 @@ public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
         }
 
         Long id = null;
-        Order order = null;
-        Product product = null;
+        OrderDTO order = null;
+        ProductDTO product = null;
         Integer amount = null;
         Float unitPrice = null;
 
         id = orderItem.getId();
-        order = orderItem.getOrder();
-        product = orderItem.getProduct();
+        order = orderToOrderDTO( orderItem.getOrder() );
+        product = productToProductDTO( orderItem.getProduct() );
         amount = orderItem.getAmount();
         unitPrice = orderItem.getUnitPrice();
 
@@ -185,28 +272,48 @@ public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
         return list1;
     }
 
+    protected PaymentDTO paymentToPaymentDTO(Payment payment) {
+        if ( payment == null ) {
+            return null;
+        }
+
+        Long id = null;
+        OrderDTO order = null;
+        Float totalPayment = null;
+        LocalDateTime paymentDate = null;
+        PaymentMethod paymentMethod = null;
+
+        id = payment.getId();
+        order = orderToOrderDTO( payment.getOrder() );
+        totalPayment = payment.getTotalPayment();
+        paymentDate = payment.getPaymentDate();
+        paymentMethod = payment.getPaymentMethod();
+
+        PaymentDTO paymentDTO = new PaymentDTO( id, order, totalPayment, paymentDate, paymentMethod );
+
+        return paymentDTO;
+    }
+
     protected OrderDTO orderToOrderDTO(Order order) {
         if ( order == null ) {
             return null;
         }
 
         Long id = null;
-        Customer customer = null;
-        String orderDate = null;
+        CustomerDTO customer = null;
+        LocalDateTime orderDate = null;
         OrderStatus status = null;
         List<OrderItemDTO> items = null;
-        Payment payment = null;
-        ShipmentDetails shipmentDetails = null;
+        PaymentDTO payment = null;
+        ShipmentDetailsDTO shipmentDetails = null;
 
         id = order.getId();
-        customer = order.getCustomer();
-        if ( order.getOrderDate() != null ) {
-            orderDate = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( order.getOrderDate() );
-        }
+        customer = customerToCustomerDTO( order.getCustomer() );
+        orderDate = order.getOrderDate();
         status = order.getStatus();
         items = orderItemListToOrderItemDTOList( order.getItems() );
-        payment = order.getPayment();
-        shipmentDetails = order.getShipmentDetails();
+        payment = paymentToPaymentDTO( order.getPayment() );
+        shipmentDetails = shipmentDetailsToShipmentDetailsDto( order.getShipmentDetails() );
 
         OrderDTO orderDTO = new OrderDTO( id, customer, orderDate, status, items, payment, shipmentDetails );
 

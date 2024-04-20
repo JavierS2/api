@@ -13,22 +13,16 @@ public interface OrderMapper {
 
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
-    //@Mapping(source = "customer" , target = "customer.id")
-    //@Mapping(source = "payment" , target = "payment.id")
-    //@Mapping(source = "shipmentDetails" , target = "shipmentDetails.id")
+    @Mapping(target = "customer.orders", ignore = true)
+    @Mapping(target = "items.product", ignore = true)
     Order orderDtoToOrder(OrderDTO orderDTO);
 
-    //@Mapping(source = "customer.id", target = "customer")
-    //@Mapping(source = "payment.id", target = "payment")
-    //@Mapping(source = "shipmentDetails.id" , target = "shipmentDetails")
-    OrderDTO
-    orderToOrderDto(Order order);
+    OrderDTO orderToOrderDto(Order order);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "customer.orders", ignore = true)
     Order orderToSaveDtoToOrder(OrderToSaveDto orderToSaveDto);
 
-
     OrderToSaveDto orderToOrderToSaveDto(Order order);
-
 
 }

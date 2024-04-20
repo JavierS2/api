@@ -19,5 +19,4 @@ public record ShipmentDetailsToSaveDto(
 
         @NotNull(message = "GuideNumber is mondatory")
         Long guideNumber
-) {
-}
+) { }

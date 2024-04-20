@@ -3,12 +3,6 @@ package edu.unimagdalena.api.model.entities;
 
 import java.util.List;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,4 +31,5 @@ public class Product {
 
   @OneToMany(mappedBy = "product")
   private List<OrderItem> orderItems;
+  
 }

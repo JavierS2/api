@@ -21,6 +21,4 @@ public record PaymentToSaveDto (
 
         @NotNull(message = "Payment method is mandatory")
         PaymentMethod paymentMethod
-) {
-
-}
+) { }

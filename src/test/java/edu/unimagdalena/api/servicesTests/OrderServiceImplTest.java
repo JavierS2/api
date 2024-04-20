@@ -50,27 +50,24 @@ public class OrderServiceImplTest {
             .build();
 
     Order order1 = Order.builder()
-                .id(2L)
-                .customer(customer1)
-                .orderDate(LocalDateTime.now())
-                .status(OrderStatus.SENT)
-                .build();
+            .id(2L)
+            .customer(customer1)
+            .orderDate(LocalDateTime.now())
+            .status(OrderStatus.SENT)
+            .build();
 
     Order order2 = Order.builder()
-                .id(3L)
-                .customer(customer1)
-                .orderDate(LocalDateTime.now())
-                .status(OrderStatus.PENDING)
-                .build();
+            .id(3L)
+            .customer(customer1)
+            .orderDate(LocalDateTime.now())
+            .status(OrderStatus.PENDING)
+            .build();
 
     OrderToSaveDto orderToSaveDto = OrderMapper.INSTANCE.orderToOrderToSaveDto(order1);
     OrderToSaveDto orderToSaveDto1 = OrderMapper.INSTANCE.orderToOrderToSaveDto(order2);
 
-
-
-
     @BeforeEach
-    void setUp(){
+    void setUp() {
         when(orderRepository.save(any())).thenReturn(order1);
         when(orderRepository.findById(anyLong())).thenReturn(Optional.ofNullable(order1));
         when(customerRepository.findById(anyLong())).thenReturn(Optional.ofNullable(customer1));
@@ -78,20 +75,20 @@ public class OrderServiceImplTest {
 
     @Test
     void testCreate() {
-        //when
+        // when
         OrderDTO saved = orderService.create(orderToSaveDto);
-        //then
+        // then
         assertThat(saved).isNotNull();
         assertThat(saved.id()).isEqualTo(2L);
     }
 
     @Test
     void testDelete() {
-        //when
+        // when
         OrderDTO saved = orderService.create(orderToSaveDto);
         when(orderRepository.count()).thenReturn(1L);
         assertEquals(1L, orderRepository.count());
-        //then
+        // then
         orderService.delete(saved.id());
         when(orderRepository.count()).thenReturn(0L);
         assertEquals(0L, orderRepository.count());
@@ -99,53 +96,55 @@ public class OrderServiceImplTest {
 
     @Test
     void testGetAllOrders() {
-        //when
+        // when
         orderService.create(orderToSaveDto);
         orderService.create(orderToSaveDto);
-        when(orderRepository.findAll()).thenReturn(List.of(order1,order2));
+        when(orderRepository.findAll()).thenReturn(List.of(order1, order2));
         assertThat(orderService.getAllOrders().size()).isEqualTo(2);
     }
 
     @Test
     void testGetBetweenDates() {
-        //when
+        // when
         orderService.create(orderToSaveDto);
-        when(orderRepository.findBetweenDates(any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(List.of(order1));
-        List<OrderDTO> res = orderService.getBetweenDates(LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1));
-        //then
+        when(orderRepository.findBetweenDates(any(LocalDateTime.class), any(LocalDateTime.class)))
+                .thenReturn(List.of(order1));
+        List<OrderDTO> res = orderService.getBetweenDates(LocalDateTime.now().minusDays(1),
+                LocalDateTime.now().plusDays(1));
+        // then
         assertNotNull(res);
         assertThat(res.size()).isEqualTo(1);
     }
 
     @Test
     void testGetByCustomerIdAndStatus() {
-        //given
+        // given
         OrderDTO saved = orderService.create(orderToSaveDto);
         when(orderRepository.findByCustomerIdAndStatus(anyLong(), any(OrderStatus.class))).thenReturn(List.of(order1));
-        //when
-        List<OrderDTO> res = orderService.getByCustomerIdAndStatus(saved.customer().getId(), OrderStatus.SENT);
-        //then
+        // when
+        List<OrderDTO> res = orderService.getByCustomerIdAndStatus(saved.customer().id(), OrderStatus.SENT);
+        // then
         assertThat(res.size()).isEqualTo(1);
     }
 
     @Test
     void testGetOrderById() {
-        //given
+        // given
         OrderDTO saved = orderService.create(orderToSaveDto);
         when(orderRepository.findById(saved.id())).thenReturn(Optional.ofNullable(order1));
-        //when
+        // when
         OrderDTO res = orderService.getOrderById(saved.id());
-        //then
+        // then
         assertEquals(saved.id(), res.id());
     }
 
     @Test
     void testUpdate() {
-        //given
+        // given
         orderService.create(orderToSaveDto);
-        //when
+        // when
         OrderDTO orderUpdate = orderService.update(orderToSaveDto1, 1L);
-        //then
+        // then
         assertEquals(OrderStatus.PENDING, orderUpdate.status());
     }
 }

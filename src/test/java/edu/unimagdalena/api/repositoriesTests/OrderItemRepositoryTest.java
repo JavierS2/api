@@ -28,7 +28,6 @@ public class OrderItemRepositoryTest extends AbstractIntegrationDBTest{
     OrderRepository orderRepository;
     @Autowired
     ProductRepository productRepository;
-    @Autowired
     public OrderItemRepositoryTest(OrderItemRepository orderItemRepository){
         this.orderItemRepository = orderItemRepository;
     }

@@ -1,8 +1,11 @@
 package edu.unimagdalena.api.model.mappers;
 
+import edu.unimagdalena.api.model.dto.CustomerDTO;
 import edu.unimagdalena.api.model.dto.OrderDTO;
 import edu.unimagdalena.api.model.dto.OrderItemDTO;
+import edu.unimagdalena.api.model.dto.PaymentDTO;
 import edu.unimagdalena.api.model.dto.ProductDTO;
+import edu.unimagdalena.api.model.dto.ShipmentDetailsDTO;
 import edu.unimagdalena.api.model.dto_save.OrderItemToSaveDto;
 import edu.unimagdalena.api.model.entities.Customer;
 import edu.unimagdalena.api.model.entities.Order;
@@ -11,16 +14,16 @@ import edu.unimagdalena.api.model.entities.Payment;
 import edu.unimagdalena.api.model.entities.Product;
 import edu.unimagdalena.api.model.entities.ShipmentDetails;
 import edu.unimagdalena.api.model.enums.OrderStatus;
+import edu.unimagdalena.api.model.enums.PaymentMethod;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-19T13:04:05-0500",
-    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.10 (Oracle Corporation)"
+    date = "2024-04-20T13:29:42-0500",
+    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.2 (Oracle Corporation)"
 )
 public class OrderItemMapperImpl implements OrderItemMapper {
 
@@ -31,14 +34,14 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         }
 
         Long id = null;
-        Order order = null;
-        Product product = null;
+        OrderDTO order = null;
+        ProductDTO product = null;
         Integer amount = null;
         Float unitPrice = null;
 
         id = orderItem.getId();
-        order = orderItem.getOrder();
-        product = orderItem.getProduct();
+        order = orderToOrderDTO( orderItem.getOrder() );
+        product = productToProductDTO( orderItem.getProduct() );
         amount = orderItem.getAmount();
         unitPrice = orderItem.getUnitPrice();
 
@@ -56,8 +59,8 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         OrderItem.OrderItemBuilder orderItem = OrderItem.builder();
 
         orderItem.id( orderItemDTO.id() );
-        orderItem.order( orderItemDTO.order() );
-        orderItem.product( orderItemDTO.product() );
+        orderItem.order( orderDTOToOrder( orderItemDTO.order() ) );
+        orderItem.product( productDTOToProduct( orderItemDTO.product() ) );
         orderItem.amount( orderItemDTO.amount() );
         orderItem.unitPrice( orderItemDTO.unitPrice() );
 
@@ -73,7 +76,7 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         OrderItem.OrderItemBuilder orderItem = OrderItem.builder();
 
         orderItem.order( orderDTOToOrder( orderItemToSaveDto.order() ) );
-        orderItem.product( productDTOToProduct( orderItemToSaveDto.product() ) );
+        orderItem.product( productDTOToProduct1( orderItemToSaveDto.product() ) );
         orderItem.amount( orderItemToSaveDto.amount() );
         orderItem.unitPrice( orderItemToSaveDto.unitPrice() );
 
@@ -101,52 +104,24 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         return orderItemToSaveDto;
     }
 
-    protected List<OrderItem> orderItemDTOListToOrderItemList(List<OrderItemDTO> list) {
-        if ( list == null ) {
+    protected CustomerDTO customerToCustomerDTO(Customer customer) {
+        if ( customer == null ) {
             return null;
         }
 
-        List<OrderItem> list1 = new ArrayList<OrderItem>( list.size() );
-        for ( OrderItemDTO orderItemDTO : list ) {
-            list1.add( orderItemDtoToOrderItem( orderItemDTO ) );
-        }
+        Long id = null;
+        String name = null;
+        String email = null;
+        String address = null;
 
-        return list1;
-    }
+        id = customer.getId();
+        name = customer.getName();
+        email = customer.getEmail();
+        address = customer.getAddress();
 
-    protected Order orderDTOToOrder(OrderDTO orderDTO) {
-        if ( orderDTO == null ) {
-            return null;
-        }
+        CustomerDTO customerDTO = new CustomerDTO( id, name, email, address );
 
-        Order.OrderBuilder order = Order.builder();
-
-        order.id( orderDTO.id() );
-        order.customer( orderDTO.customer() );
-        if ( orderDTO.orderDate() != null ) {
-            order.orderDate( LocalDateTime.parse( orderDTO.orderDate() ) );
-        }
-        order.status( orderDTO.status() );
-        order.items( orderItemDTOListToOrderItemList( orderDTO.items() ) );
-        order.payment( orderDTO.payment() );
-        order.shipmentDetails( orderDTO.shipmentDetails() );
-
-        return order.build();
-    }
-
-    protected Product productDTOToProduct(ProductDTO productDTO) {
-        if ( productDTO == null ) {
-            return null;
-        }
-
-        Product.ProductBuilder product = Product.builder();
-
-        product.id( productDTO.id() );
-        product.name( productDTO.name() );
-        product.price( productDTO.price() );
-        product.stock( productDTO.stock() );
-
-        return product.build();
+        return customerDTO;
     }
 
     protected List<OrderItemDTO> orderItemListToOrderItemDTOList(List<OrderItem> list) {
@@ -162,28 +137,70 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         return list1;
     }
 
+    protected PaymentDTO paymentToPaymentDTO(Payment payment) {
+        if ( payment == null ) {
+            return null;
+        }
+
+        Long id = null;
+        OrderDTO order = null;
+        Float totalPayment = null;
+        LocalDateTime paymentDate = null;
+        PaymentMethod paymentMethod = null;
+
+        id = payment.getId();
+        order = orderToOrderDTO( payment.getOrder() );
+        totalPayment = payment.getTotalPayment();
+        paymentDate = payment.getPaymentDate();
+        paymentMethod = payment.getPaymentMethod();
+
+        PaymentDTO paymentDTO = new PaymentDTO( id, order, totalPayment, paymentDate, paymentMethod );
+
+        return paymentDTO;
+    }
+
+    protected ShipmentDetailsDTO shipmentDetailsToShipmentDetailsDTO(ShipmentDetails shipmentDetails) {
+        if ( shipmentDetails == null ) {
+            return null;
+        }
+
+        Long id = null;
+        OrderDTO order = null;
+        String shipmentAddress = null;
+        String transporter = null;
+        Long guideNumber = null;
+
+        id = shipmentDetails.getId();
+        order = orderToOrderDTO( shipmentDetails.getOrder() );
+        shipmentAddress = shipmentDetails.getShipmentAddress();
+        transporter = shipmentDetails.getTransporter();
+        guideNumber = shipmentDetails.getGuideNumber();
+
+        ShipmentDetailsDTO shipmentDetailsDTO = new ShipmentDetailsDTO( id, order, shipmentAddress, transporter, guideNumber );
+
+        return shipmentDetailsDTO;
+    }
+
     protected OrderDTO orderToOrderDTO(Order order) {
         if ( order == null ) {
             return null;
         }
 
         Long id = null;
-        Customer customer = null;
-        String orderDate = null;
+        CustomerDTO customer = null;
+        LocalDateTime orderDate = null;
         OrderStatus status = null;
         List<OrderItemDTO> items = null;
-        Payment payment = null;
-        ShipmentDetails shipmentDetails = null;
+        PaymentDTO payment = null;
+        ShipmentDetailsDTO shipmentDetails = null;
 
         id = order.getId();
-        customer = order.getCustomer();
-        if ( order.getOrderDate() != null ) {
-            orderDate = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( order.getOrderDate() );
-        }
+        customer = customerToCustomerDTO( order.getCustomer() );
+        orderDate = order.getOrderDate();
         status = order.getStatus();
         items = orderItemListToOrderItemDTOList( order.getItems() );
-        payment = order.getPayment();
-        shipmentDetails = order.getShipmentDetails();
+        payment = paymentToPaymentDTO( order.getPayment() );
+        shipmentDetails = shipmentDetailsToShipmentDetailsDTO( order.getShipmentDetails() );
 
         OrderDTO orderDTO = new OrderDTO( id, customer, orderDate, status, items, payment, shipmentDetails );
 
@@ -208,5 +225,113 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         ProductDTO productDTO = new ProductDTO( id, name, price, stock );
 
         return productDTO;
+    }
+
+    protected Customer customerDTOToCustomer(CustomerDTO customerDTO) {
+        if ( customerDTO == null ) {
+            return null;
+        }
+
+        Customer.CustomerBuilder customer = Customer.builder();
+
+        customer.id( customerDTO.id() );
+        customer.name( customerDTO.name() );
+        customer.email( customerDTO.email() );
+        customer.address( customerDTO.address() );
+
+        return customer.build();
+    }
+
+    protected List<OrderItem> orderItemDTOListToOrderItemList(List<OrderItemDTO> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<OrderItem> list1 = new ArrayList<OrderItem>( list.size() );
+        for ( OrderItemDTO orderItemDTO : list ) {
+            list1.add( orderItemDtoToOrderItem( orderItemDTO ) );
+        }
+
+        return list1;
+    }
+
+    protected Payment paymentDTOToPayment(PaymentDTO paymentDTO) {
+        if ( paymentDTO == null ) {
+            return null;
+        }
+
+        Payment.PaymentBuilder payment = Payment.builder();
+
+        payment.id( paymentDTO.id() );
+        payment.order( orderDTOToOrder( paymentDTO.order() ) );
+        payment.totalPayment( paymentDTO.totalPayment() );
+        payment.paymentDate( paymentDTO.paymentDate() );
+        payment.paymentMethod( paymentDTO.paymentMethod() );
+
+        return payment.build();
+    }
+
+    protected ShipmentDetails shipmentDetailsDTOToShipmentDetails(ShipmentDetailsDTO shipmentDetailsDTO) {
+        if ( shipmentDetailsDTO == null ) {
+            return null;
+        }
+
+        ShipmentDetails.ShipmentDetailsBuilder shipmentDetails = ShipmentDetails.builder();
+
+        shipmentDetails.id( shipmentDetailsDTO.id() );
+        shipmentDetails.order( orderDTOToOrder( shipmentDetailsDTO.order() ) );
+        shipmentDetails.shipmentAddress( shipmentDetailsDTO.shipmentAddress() );
+        shipmentDetails.transporter( shipmentDetailsDTO.transporter() );
+        shipmentDetails.guideNumber( shipmentDetailsDTO.guideNumber() );
+
+        return shipmentDetails.build();
+    }
+
+    protected Order orderDTOToOrder(OrderDTO orderDTO) {
+        if ( orderDTO == null ) {
+            return null;
+        }
+
+        Order.OrderBuilder order = Order.builder();
+
+        order.id( orderDTO.id() );
+        order.customer( customerDTOToCustomer( orderDTO.customer() ) );
+        order.orderDate( orderDTO.orderDate() );
+        order.status( orderDTO.status() );
+        order.items( orderItemDTOListToOrderItemList( orderDTO.items() ) );
+        order.payment( paymentDTOToPayment( orderDTO.payment() ) );
+        order.shipmentDetails( shipmentDetailsDTOToShipmentDetails( orderDTO.shipmentDetails() ) );
+
+        return order.build();
+    }
+
+    protected Product productDTOToProduct(ProductDTO productDTO) {
+        if ( productDTO == null ) {
+            return null;
+        }
+
+        Product.ProductBuilder product = Product.builder();
+
+        product.id( productDTO.id() );
+        product.name( productDTO.name() );
+        product.price( productDTO.price() );
+        product.stock( productDTO.stock() );
+
+        return product.build();
+    }
+
+    protected Product productDTOToProduct1(ProductDTO productDTO) {
+        if ( productDTO == null ) {
+            return null;
+        }
+
+        Product.ProductBuilder product = Product.builder();
+
+        product.id( productDTO.id() );
+        product.name( productDTO.name() );
+        product.price( productDTO.price() );
+        product.stock( productDTO.stock() );
+
+        return product.build();
     }
 }
