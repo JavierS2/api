@@ -15,12 +15,12 @@ public interface OrderMapper {
 
     @Mapping(target = "customer.orders", ignore = true)
     @Mapping(target = "items.product", ignore = true)
+    @Mapping(target = "customer.password", ignore = true)
     Order orderDtoToOrder(OrderDTO orderDTO);
 
     OrderDTO orderToOrderDto(Order order);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "customer.orders", ignore = true)
     Order orderToSaveDtoToOrder(OrderToSaveDto orderToSaveDto);
 
     OrderToSaveDto orderToOrderToSaveDto(Order order);

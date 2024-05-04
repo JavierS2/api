@@ -19,6 +19,8 @@ public interface OrderItemMapper {
 
     //@Mapping(source = "orderId", target = "order.id")
     //@Mapping(source = "productId", target = "product.id")
+
+    @Mapping(target = "order.customer.password", ignore = true)
     OrderItem orderItemDtoToOrderItem(OrderItemDTO orderItemDTO);
 
     @Mapping(target = "id", ignore = true)

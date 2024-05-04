@@ -22,8 +22,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-20T13:29:42-0500",
-    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.2 (Oracle Corporation)"
+    date = "2024-05-03T19:36:41-0500",
+    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.10 (Oracle Corporation)"
 )
 public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
 
@@ -115,6 +115,7 @@ public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
         customer.name( customerDTO.name() );
         customer.email( customerDTO.email() );
         customer.address( customerDTO.address() );
+        customer.roles( customerDTO.roles() );
 
         return customer.build();
     }
@@ -205,14 +206,16 @@ public class ShipmentDetailsMapperImpl implements ShipmentDetailsMapper {
         Long id = null;
         String name = null;
         String email = null;
+        String roles = null;
         String address = null;
 
         id = customer.getId();
         name = customer.getName();
         email = customer.getEmail();
+        roles = customer.getRoles();
         address = customer.getAddress();
 
-        CustomerDTO customerDTO = new CustomerDTO( id, name, email, address );
+        CustomerDTO customerDTO = new CustomerDTO( id, name, email, roles, address );
 
         return customerDTO;
     }

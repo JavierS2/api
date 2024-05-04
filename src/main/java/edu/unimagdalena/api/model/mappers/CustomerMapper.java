@@ -15,6 +15,7 @@ public interface CustomerMapper {
 
     CustomerDTO customerToCustomerDto(Customer customer);
 
+    @Mapping(target = "password", ignore = true)
     @Mapping(target = "orders", ignore = true)
     Customer customerDtoToCustomer(CustomerDTO customerDTO);
 

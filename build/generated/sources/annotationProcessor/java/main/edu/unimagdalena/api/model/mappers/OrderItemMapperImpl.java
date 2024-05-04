@@ -22,8 +22,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-20T13:29:42-0500",
-    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.2 (Oracle Corporation)"
+    date = "2024-05-03T19:43:49-0500",
+    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.10 (Oracle Corporation)"
 )
 public class OrderItemMapperImpl implements OrderItemMapper {
 
@@ -75,7 +75,7 @@ public class OrderItemMapperImpl implements OrderItemMapper {
 
         OrderItem.OrderItemBuilder orderItem = OrderItem.builder();
 
-        orderItem.order( orderDTOToOrder( orderItemToSaveDto.order() ) );
+        orderItem.order( orderDTOToOrder1( orderItemToSaveDto.order() ) );
         orderItem.product( productDTOToProduct1( orderItemToSaveDto.product() ) );
         orderItem.amount( orderItemToSaveDto.amount() );
         orderItem.unitPrice( orderItemToSaveDto.unitPrice() );
@@ -112,14 +112,16 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         Long id = null;
         String name = null;
         String email = null;
+        String roles = null;
         String address = null;
 
         id = customer.getId();
         name = customer.getName();
         email = customer.getEmail();
+        roles = customer.getRoles();
         address = customer.getAddress();
 
-        CustomerDTO customerDTO = new CustomerDTO( id, name, email, address );
+        CustomerDTO customerDTO = new CustomerDTO( id, name, email, roles, address );
 
         return customerDTO;
     }
@@ -238,6 +240,7 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         customer.name( customerDTO.name() );
         customer.email( customerDTO.email() );
         customer.address( customerDTO.address() );
+        customer.roles( customerDTO.roles() );
 
         return customer.build();
     }
@@ -318,6 +321,40 @@ public class OrderItemMapperImpl implements OrderItemMapper {
         product.stock( productDTO.stock() );
 
         return product.build();
+    }
+
+    protected Customer customerDTOToCustomer1(CustomerDTO customerDTO) {
+        if ( customerDTO == null ) {
+            return null;
+        }
+
+        Customer.CustomerBuilder customer = Customer.builder();
+
+        customer.id( customerDTO.id() );
+        customer.name( customerDTO.name() );
+        customer.email( customerDTO.email() );
+        customer.address( customerDTO.address() );
+        customer.roles( customerDTO.roles() );
+
+        return customer.build();
+    }
+
+    protected Order orderDTOToOrder1(OrderDTO orderDTO) {
+        if ( orderDTO == null ) {
+            return null;
+        }
+
+        Order.OrderBuilder order = Order.builder();
+
+        order.id( orderDTO.id() );
+        order.customer( customerDTOToCustomer1( orderDTO.customer() ) );
+        order.orderDate( orderDTO.orderDate() );
+        order.status( orderDTO.status() );
+        order.items( orderItemDTOListToOrderItemList( orderDTO.items() ) );
+        order.payment( paymentDTOToPayment( orderDTO.payment() ) );
+        order.shipmentDetails( shipmentDetailsDTOToShipmentDetails( orderDTO.shipmentDetails() ) );
+
+        return order.build();
     }
 
     protected Product productDTOToProduct1(ProductDTO productDTO) {
